@@ -29,13 +29,13 @@ func ParseProfile(bytes []byte, name string, gender string) engine.ParseResult {
 	if weight, err := strconv.Atoi(extractString(bytes, weightRe)); err == nil {
 		profile.Weight = weight
 	}
-
+  
   profile.Income = extractString(bytes, incomeRe)
   profile.Marriage = extractString(bytes, marriageRe)
   profile.Address = extractString(bytes, addressRe)
 
   result := engine.ParseResult{
-    Items: []interface{}{profile}
+    Items: []interface{}{profile},
   }
   return result
 }

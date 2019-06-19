@@ -1,34 +1,39 @@
 package engine
+
 import (
-  "crawler/fetcher"
-  "log"
+	"crawler/fetcher"
+	"log"
 )
 
 func Run(seeds ...Request) {
-  var requests []Request
+	// requests list
+	var requests []Request
 
-  for _, r := range seeds {
-    requests = append(requests,r)
-  }
+	for _, r := range seeds {
+		requests = append(requests, r)
+	}
 
-  for len(requests) > 0 {
-    request := requests[0]
-    requests := requests[1:]
-    log.Printf("Fetching %s\n", request.Url)
-    content, err := fetcher.Fetch(request.Url)
-    if err != nil {
-      log.Printf("Fetch error, Url: %s %v\n", request.Url, err)
-      continue
-    }
+	for len(requests) > 0 {
+		request := requests[0]
+		requests = requests[1:]
+		log.Printf("Fetching %s\n", request.Url)
+		// get html content
+		content, err := fetcher.Fetch(request.Url)
+		if err != nil {
+			log.Printf("Fetch error, Url: %s %v\n", request.Url, err)
+			continue
+		}
 
-    parseResult := request.ParseFunc(content)
+		parseResult := request.ParseFunc(content)
 
-    requests := append(requests, parseResult.Requests...)
+		requests = append(requests, parseResult.Requests...)
 
-    for _, item := range parseResult.Items {
-      log.Printf("Got item %v\n", item)
-    }
-
-  }
+		for _, item := range parseResult.Items {
+			log.Printf("Got item %v\n", item)
+		}
+		// for _, item := range parseResult.Requests {
+		// 	log.Printf("Got item %v\n", item.Url)
+		// }
+	}
 
 }

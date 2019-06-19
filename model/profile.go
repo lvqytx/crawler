@@ -5,7 +5,7 @@ type Profile struct {
   Age       int
   Height    int
   Weight    int
-  Income    int
+  Income    string
   Marriage  string
   Address   string
 }
